@@ -1,1 +1,43 @@
-
+body {
+    margin: 0;
+    text-align: center;
+    background: #3c4249;
+    font-family: Arial, sans-serif;
+}
+header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 20px;
+}
+#trivia-game {
+    margin:0;
+}
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#easy {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+#medium {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+}
+#hard {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}
+#how-to-play {
+    display: block;
+    margin: 10px auto 0; 
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px; 
+}
