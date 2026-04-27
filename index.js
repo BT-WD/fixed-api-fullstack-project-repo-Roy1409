@@ -31,6 +31,60 @@ function shuffle(array) {
 let questionsData = [];
 let currentIndex = 0;
 let score = 0;
+const HIGH_SCORE_KEY = 'triviaHighScore';
+function getHighScoreEntry() {
+    const json = localStorage.getItem(HIGH_SCORE_KEY);
+    if (!json) return null;
+    try {
+        return JSON.parse(json);
+    } catch {
+        return null;
+    }
+}
+function saveHighScoreEntry(entry) {
+    localStorage.setItem(HIGH_SCORE_KEY, JSON.stringify(entry));
+}
+function updateHighScoreDisplay() {
+    const highScoreValue = document.getElementById('high-score-value');
+    const stored = getHighScoreEntry();
+    if (!highScoreValue) return;
+    if (!stored) {
+        highScoreValue.textContent = 'No score yet';
+        return;
+    }
+    highScoreValue.textContent = `${stored.score}/${stored.total} (${stored.percent}%)`;
+}
+function initializeHighScore() {
+    updateHighScoreDisplay();
+}
+function makeSaveHighScoreButton(total) {
+    const saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.id = 'save-high-score';
+    saveButton.textContent = 'Save High Score';
+    const info = document.createElement('p');
+    info.className = 'save-info';
+    saveButton.addEventListener('click', () => {
+        const percent = Math.round((score / total) * 100);
+        const currentEntry = { score, total, percent };
+        const stored = getHighScoreEntry();
+        const shouldUpdate = !stored || percent > stored.percent || (percent === stored.percent && score > stored.score);
+        if (shouldUpdate) {
+            saveHighScoreEntry(currentEntry);
+            updateHighScoreDisplay();
+            saveButton.textContent = 'Saved!';
+            saveButton.disabled = true;
+            info.textContent = 'High score saved locally.';
+        } else {
+            info.textContent = 'Current result is not higher than saved high score.';
+        }
+    });
+    const wrapper = document.createElement('div');
+    wrapper.className = 'save-high-score-container';
+    wrapper.appendChild(saveButton);
+    wrapper.appendChild(info);
+    return wrapper;
+}
 function renderQuestionAt(index) {
     if (!output) return;
     output.innerHTML = '';
@@ -108,6 +162,7 @@ function showResults() {
     pScore.textContent = `You answered ${score} of ${total} correctly.`;
     const pPercent = document.createElement('p');
     pPercent.textContent = `Score: ${percent}%`;
+    const saveButtonWrapper = makeSaveHighScoreButton(total);
     const playAgain = document.createElement('button');
     playAgain.type = 'button';
     playAgain.id = 'play-again';
@@ -118,6 +173,7 @@ function showResults() {
     results.appendChild(h);
     results.appendChild(pScore);
     results.appendChild(pPercent);
+    results.appendChild(saveButtonWrapper);
     results.appendChild(playAgain);
     output.appendChild(results);
 }
@@ -138,4 +194,6 @@ document.getElementById('start')?.addEventListener('click', () => {
             if (output) output.innerHTML = '<p>Error fetching questions. See console for details.</p>';
         });
 });
+
+initializeHighScore();
 
