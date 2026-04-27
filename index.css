@@ -8,9 +8,17 @@ header {
     background-color: #ffffff;
     color: #000000;
     padding: 20px;
+    position: relative;
 }
 #trivia-game {
     margin:0;
+}
+.high-score {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 0.95rem;
+    color: #333;
 }
 #start{
     padding: 10px 16px;
@@ -19,4 +27,25 @@ header {
   background: #2196F3;
   color: #fff;
   cursor: pointer;
+}
+.save-high-score-container {
+    margin: 16px auto 12px;
+    max-width: 320px;
+}
+.save-info {
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+.save-high-score-container button {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+.save-high-score-container button:disabled {
+    opacity: 0.7;
+    cursor: default;
 }
